@@ -1,0 +1,40 @@
+* Dungeon Master's Daemon
+
+A tool to help tabletop dungeon masters with managing combat.
+
+   - Create and manage encounters.
+   - Manually enter the player's initiative roles, and let your daemon roll initiative for creatures and npcs.
+   - Manage create HP and eventually effects.
+
+Basicaly, it's what I wish D&D Beyond would deliver with it's encounter builder.
+
+* Development
+** Setup the virtual env
+
+To create the virtual environment, run:
+#+begin_src bash
+   pip install -r requirements.txt
+#+end_src
+
+
+* Data Structures.
+
+A DM will need to keep track of N encounters.
+
+An encounter will have n instances of m creatures.  The order in which creatures in an encounter take their turn is determined by their *initiative role*.  This is calculated by rolling 1d20 + their *initiative modifier*, which is determined from the creatures dexterity.
+
+So we have the following tables
+
+* User interface
+
+We'll need screens for the following:
+
+ - List encounters, choose an encounter.
+ - Create/edit an encounter.
+ - Run an encounter.
+ - Enter PC initiative rolls.
+
+
+* Text importing from DADB
+
+** Make this work.
