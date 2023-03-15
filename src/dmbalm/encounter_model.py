@@ -6,9 +6,10 @@ from sqlalchemy import (
     String,
     Numeric,
 )
-from sqlalchemy.orm import relationship, declarative_base, backref
+from sqlalchemy.orm import relationship, declarative_base
 
-Base = declaritive_base();
+Base = declarative_base();
+
 
 # Player Character's can be represented by a creature with everything Null
 # except for the creature name, which let's us know who's initiative roll we
@@ -25,11 +26,13 @@ class Creature(Base):
     armor_class = Column(Numeric)
     xp = Column(Numeric) #xp provided by defeating the creature.
     challenge = Column(Numeric)
-    skills = Column(String)
     senses = Column(String)
+    passive_perception  = Column(String)
     languages = Column(String)
     actions = Column(String)
+    speed = Column(Numeric) # ft/turn
     reactions = Column(String)
+    proficiency_bonus=Column(Numeric)
 
 # Stores instances of the creatures used in various encounters.
 # One creature instance belongs to one encounter (currently).
@@ -47,7 +50,7 @@ class CreatureInstance(Base):
     is_pc = Column(Boolean) # is it a player character?
     initiative = Column(Integer)
 
-    creature_id = Column(Integer, ForeignKey("creature.id"))
+    creature_id = Column(Integer, ForeignKey("creature.name"))
     encounter_id = Column(Integer, ForeignKey("encounter.id"))
 
     # not sure I need/want this:
@@ -62,3 +65,11 @@ class Encounter(Base):
     Description = Column(String)
 
     creature_instances = relationship("CreatureInstance", back_populates="encounters")
+
+# For now actions are just labels and descriptions.
+# stored in a table to allow n actions per creature.
+class Action(Base):
+    __tablename__ = "action"
+    id = Column(Integer, primary_key=true)
+    name = Column(String(30))
+    description = Column(String(50))
