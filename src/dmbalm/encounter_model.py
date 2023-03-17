@@ -1,6 +1,6 @@
 import dice
 from dmbalm import modifiers
-from dmbalm.connection import Session
+from dmbalm.db import Base, SessionLocal
 
 from sqlalchemy import (
     Boolean,
@@ -11,9 +11,7 @@ from sqlalchemy import (
     Numeric,
  )
 
-from sqlalchemy.orm import relationship, declarative_base
-
-Base = declarative_base()
+from sqlalchemy.orm import relationship
 
 # Player Character's can be represented by a creature with everything Null
 # except for the creature name, which let's us know who's initiative roll we
@@ -68,7 +66,7 @@ class CreatureInstance(Base):
         """Construct an instance of creature of type creature_name."""
         print("calling __init__ {}", creature_name)
         self.creature_id  = creature_name
-        with Session() as session:
+        with SessionLocal() as session:
             res = session.query(Creature).filter_by(name=creature_name)
             crit = res.first()
 
