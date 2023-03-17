@@ -29,15 +29,10 @@ To create the virtual environment, run:
 - [X] on construction, I want to roll the hit points, and initiative.  Options can come later.
 
 *** TODO TEST ENCOUNTER CREATIONS
-    - [ ]  4 kobolds
-    - [ ] 6 kobolds and 2 winged kobolds
-    - [ ] 3 winged kobolds
-    - [ ] 5 winged kobolds
-    - [ ] 2 winged kobolds and 1 guard drake (appendix D)
-    - [ ] 2 ambush drakes (appendix D)
+    - [X]  4 kobolds
 
-** TODO test_crud
-Check out the user interface notes below for what to do here.
+      Tests are good when I can verify the contents of the created encounters.
+
 
 ** User interface
 *** TODO  do a pyvi tutorial, maybe two.
@@ -86,6 +81,20 @@ Check out the user interface notes below for what to do here.
 
 We'll need screens for the following:
 
-* Text importing from DADB
+** TODO CRUD
+** TODO BASIC DATA METHODS
+    - [ ] 6 kobolds and 2 winged kobolds
+    - [ ] 3 winged kobolds
+    - [ ] 5 winged kobolds
+    - [ ] 2 winged kobolds and 1 guard drake (appendix D)
+    - [ ] 2 ambush drakes (appendix D)
+
+
+* TODO Text importing from DADB
 
 ** Make this work.
+
+* Notes
+
+Okay, I now have workign db language for the stuff I need to store.  The next step is either to connect this
+This looks helpful https://towardsdatascience.com/fastapi-cloud-database-loading-with-python-1f531f1d438a

@@ -1,8 +1,6 @@
 import sys
 sys.path.insert(0,"../src/")
 
-from sqlalchemy.orm import Session
-
 from dmbalm.encounter_model import Base
 from dmbalm.encounter_model import Creature
 from dmbalm.encounter_model import Action
@@ -10,7 +8,7 @@ from dmbalm.encounter_model import Action
 from dmbalm.encounter_model import Base
 from dmbalm.encounter_model import Creature, CreatureInstance, Encounter
 from dmbalm import crud
-from dmbalm.connection import engine
+from dmbalm.connection import Session, engine
 
 import dice
 
@@ -37,14 +35,14 @@ def test_add_kobold():
     k1.actions.append(dagger)
     k1.actions.append(sling)
 
-    with Session(engine) as session, session.begin():
+    with Session() as session, session.begin():
         session.add(k1)
         session.add(dagger)
         session.add(sling)
         session.commit()
 
 def test_count_creatures():
-    with Session(engine) as session, session.begin():
+    with Session() as session, session.begin():
         assert(session.query(Creature).count() == 1)
 
 def test_get_creature():
@@ -57,19 +55,32 @@ def test_instantiate_kobold():
     kob = CreatureInstance(crname)
     assert (kob.creature_id == crname)
     assert( dice.roll_min(cr.hit_dice) <= kob.hit_points <= dice.roll_max(cr.hit_dice))
-    with Session(engine) as session, session.begin():
+    with Session() as session, session.begin():
         session.add(kob)
         session.commit()
 
-    # with Session(engine) as session, session.begin():
-    #     instances = crud.get_instances()
-    #     assert(instances.count() == 1)
+    with Session() as session, session.begin():
+        instances = crud.get_instances()
+        assert(instances.count() == 1)
 
 
-# def test_encounter_4_kobolds():
-#     enc = Encounter(name = "four kobolds", description = "random encounter in Dragon Hatchery")
-#     enc.creature_instances = [CreatureInstance("Kobold") for _ in range(4)]
+def test_encounter_4_kobolds():
+    enc_name = "four kobolds"
+    enc_description = "random encounter in Dragon Hatchery"
+    enc = Encounter(name = enc_name, description =enc_description)
+    kobs = [CreatureInstance("Kobold") for _ in range(4)]
+    enc.creature_instances = kobs
+    with Session() as session, session.begin():
+        # is this redundant?
+        session.add_all(kobs)
+        session.add(enc)
+        session.commit()
 
+    with Session() as session, session.begin():
+        encounter = session.query(Encounter).filter_by(name=enc_name).first()
+        assert(encounter.name ==enc_name)
+        assert(encounter.description == enc_description)
+        assert(len(encounter.creature_instances) == 4)
 
 
 

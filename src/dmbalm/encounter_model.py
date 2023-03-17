@@ -55,8 +55,7 @@ class Creature(Base):
 class CreatureInstance(Base):
     __tablename__ = "creature_instance"
     id = Column(Integer, primary_key=True)
-    #    creature_id = Column(String, ForeignKey("creature.name"))
-    creature_id = Column(String)
+    creature_id = Column(String, ForeignKey("creature.name"))
     hit_points = Column(Integer)
     is_pc = Column(Boolean)  # is it a player character?
     initiative = Column(Integer)
@@ -77,6 +76,9 @@ class CreatureInstance(Base):
         self.is_pc = False
         self.initiative = int(dice.roll('1d20t') + modifiers.lookup(crit.dexterity))
 
+    def __repr__(self):
+        return "<CreatureInstance(creature_id={}, hit_points={}, is_pc={}, initiative={}, encounter_id={}>".format(self.creature_id, self.hit_points, self.is_pc, self.initiative, self.encounter_id)
+
 
 # Stores encounters, which are essentially lists of creatures and PC's.  There are
 class Encounter(Base):
@@ -87,6 +89,8 @@ class Encounter(Base):
 
     creature_instances = relationship("CreatureInstance", back_populates="encounter")
 
+    def __repr__(self):
+        return "<Encounter(name={},description={},creature_instances={}>".format(self.name, self.description, self.creature_instances)
 
 # For now actions are just labels and descriptions.
 # stored in a table to allow n actions per creature.

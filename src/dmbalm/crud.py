@@ -1,5 +1,5 @@
 
-from dmbalm.encounter_model import Creature, CreatureInstance
+from dmbalm.encounter_model import Creature, CreatureInstance, Encounter
 
 from dmbalm.connection import Session
 
@@ -12,3 +12,8 @@ def get_instances():
     """Get all creature instances"""
     with Session() as session:
         return session.query(CreatureInstance)
+
+def get_encounter(encounter_name):
+    """Get an encounter with the given name"""
+    with Session() as session:
+        return session.query(Encounter).filter_by(name=encounter_name).first()

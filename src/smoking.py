@@ -1,15 +1,20 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
+import sys
+sys.path.insert(0,"../src/")
+
 
 from dmbalm.encounter_model import Base
 from dmbalm.encounter_model import Creature
 from dmbalm.encounter_model import Action
 
-engine = create_engine("sqlite+pysqlite:///:memory:", echo=True, future=True)
+from dmbalm.encounter_model import Base
+from dmbalm.encounter_model import Creature, CreatureInstance, Encounter
+from dmbalm import crud
+from dmbalm.connection import engine
+from dmbalm.connection import Session
 
+import dice
 
 Base.metadata.create_all(engine)
-
 
 def add_kobold():
     k1 = Creature(
@@ -35,15 +40,18 @@ def add_kobold():
         session.add(sling)
         session.commit()
 
-def do_it():
-    with Session(engine) as session, session.begin():
-        session.add(bob)
-        session.add(dagger)
-        session.add(sling)
-        session.commit()
+add_kobold()
 
-def get_creatures():
-    with Session(engine) as session, session.begin():
-        return session.query(Creature)
-        #for instance in session.query(Creature):
-        #   print(instance.name, instance.actions)
+enc_name = "four kobolds"
+enc_description = "random encounter in Dragon Hatchery"
+enc = Encounter(name = enc_name, description =enc_description)
+kobs = [CreatureInstance("Kobold") for _ in range(4)]
+enc.creature_instances = kobs
+# with Session(engine) as session, session.begin():
+#     session.add(enc)
+#     # is this redundant?
+#     session.add_all(kobs)
+#     session.commit()
+
+# with Session(engine) as session, session.begin():
+#     encounter = crud.get_encounter(enc_name)
