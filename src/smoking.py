@@ -2,12 +2,12 @@ import sys
 sys.path.insert(0,"../src/")
 
 
-from dmbalm.encounter_model import Base
-from dmbalm.encounter_model import Creature
-from dmbalm.encounter_model import Action
+from dmbalm.models import Base
+from dmbalm.models import Creature
+from dmbalm.models import Action
 
-from dmbalm.encounter_model import Base
-from dmbalm.encounter_model import Creature, CreatureInstance, Encounter
+from dmbalm.models import Base
+from dmbalm.models import Creature, CreatureInstance, Encounter
 from dmbalm import crud
 from dmbalm.connection import engine
 from dmbalm.connection import Session

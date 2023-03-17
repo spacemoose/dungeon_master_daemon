@@ -1,9 +1,9 @@
 import sys
 sys.path.insert(0,"../src/")
 
-from dmbalm.encounter_model import Creature
-from dmbalm.encounter_model import Action
-from dmbalm.encounter_model import Creature, CreatureInstance, Encounter
+from dmbalm.models import Creature
+from dmbalm.models import Action
+from dmbalm.models import Creature, CreatureInstance, Encounter
 from dmbalm import crud
 from dmbalm.db import Base, SessionLocal, engine
 
@@ -43,12 +43,12 @@ def test_count_creatures():
         assert(session.query(Creature).count() == 1)
 
 def test_get_creature():
-    kob = crud.get_creature("Kobold")
+    kob = crud.get_creature(SessionLocal(), creature_name= "Kobold")
     assert(kob.name == "Kobold")
 
 def test_instantiate_kobold():
     crname = "Kobold"
-    cr = crud.get_creature(crname)
+    cr = crud.get_creature(SessionLocal(), crname)
     kob = CreatureInstance(crname)
     assert (kob.creature_id == crname)
     assert( dice.roll_min(cr.hit_dice) <= kob.hit_points <= dice.roll_max(cr.hit_dice))
@@ -56,9 +56,8 @@ def test_instantiate_kobold():
         session.add(kob)
         session.commit()
 
-    with SessionLocal() as session, session.begin():
-        instances = crud.get_instances()
-        assert(instances.count() == 1)
+    instances = crud.get_instances(SessionLocal())
+    assert(instances.count() == 1)
 
 
 def test_encounter_4_kobolds():
@@ -73,11 +72,13 @@ def test_encounter_4_kobolds():
         session.add(enc)
         session.commit()
 
-    with SessionLocal() as session, session.begin():
-        encounter = session.query(Encounter).filter_by(name=enc_name).first()
-        assert(encounter.name ==enc_name)
-        assert(encounter.description == enc_description)
-        assert(len(encounter.creature_instances) == 4)
+        #   with SessionLocal() as session, session.begin():
+        #   encounter = session.query(Encounter).filter_by(name=enc_name).first()
+
+    encounter = crud.get_encounter(SessionLocal(), enc_name)
+    assert(encounter.name ==enc_name)
+    assert(encounter.description == enc_description)
+    assert(len(encounter.creature_instances) == 4)
 
 
 

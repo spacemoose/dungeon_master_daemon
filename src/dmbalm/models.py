@@ -29,11 +29,12 @@ class Creature(Base):
     xp = Column(Numeric)  # xp provided by defeating the creature.
     challenge = Column(Numeric)
     senses = Column(String)
-    passive_perception = Column(String)
     languages = Column(String)
     speed = Column(Numeric)  # ft/turn
-    reactions = Column(String)
     proficiency_bonus = Column(Numeric)
+#   reactions = Column(String)
+#    passive_perception = Column(String)
+
 
     actions = relationship("Action", back_populates="creature")
 
