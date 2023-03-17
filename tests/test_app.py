@@ -46,11 +46,13 @@ def test_add_kobold():
 
 
 def test_count_creatures():
-
-
-def get_creatures():
     with Session(engine) as session, session.begin():
-        return session.query(Creature)
+        assert(session.query(Creature).count() == 1)
 
-        #for instance in session.query(Creature):
-        #   print(instance.name, instance.actions)
+
+def test_create_encounter():
+    four_kobolds = Encounter(name = "four kobolds", description = "random encounter in Dragon Hatchery")
+    creature_instance =
+
+# Okay, up next let's make some crud methods for creating and reading
+# stuff from the db.

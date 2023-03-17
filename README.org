@@ -10,30 +10,80 @@ Basicaly, it's what I wish D&D Beyond would deliver with it's encounter builder.
 
 * Development
 ** Setup the virtual env
+You can check out all the requirements in ~requirements.txt~.  Big love to borntyping and calebj for dice.
 
 To create the virtual environment, run:
 #+begin_src bash
    pip install -r requirements.txt
 #+end_src
 
+** TODO DB stuff
 
-* Data Structures.
+*** TODO [100%] test_creature.
+      - [X] I can create a kobold
+      - [X] I can view a kobold
+      - [X] I can add the two actions to the kobold.
 
-A DM will need to keep track of N encounters.
+*** TODO test_instances
+- [ ] kinda gotta decide on a basic interface for creating and adding instances.
+- [ ] on construction, I want to roll the hit points, and initiative.  Options can come later.
+Sanity checks on the following:
+- [ ]  4 kobolds
+- [ ] 6 kobolds and 2 winged kobolds
+- [ ] 3 winged kobolds
+- [ ] 5 winged kobolds
+- [ ] 2 winged kobolds and 1 guard drake (appendix D)
+- [ ] 2 ambush drakes (appendix D)
 
-An encounter will have n instances of m creatures.  The order in which creatures in an encounter take their turn is determined by their *initiative role*.  This is calculated by rolling 1d20 + their *initiative modifier*, which is determined from the creatures dexterity.
+** TODO test_crud
+Check out the user interface notes below for what to do here.
 
-So we have the following tables
+** User interface
+*** TODO  do a pyvi tutorial, maybe two.
+*** TODO Interface for adding a creature
+       - [ ] Start with a stupid button to call up the "add creature" interface.
+       - [ ] I can create a creature.
+       - [ ] When typing in creature name, fuzzy matching prevents me from duplicating an entry -- go to edit instead of create.
+       - [ ] I can select an existing attack by name.
+       - [ ] I can create an existing attack when name does not exist.
+       - [ ] I can fuzzy-match by partial name, and either select or create new appropriately.
+       - [ ] I'll need an add button, and a cancel button.
 
-* User interface
+*** TODO  I can create an encounter
+       - [ ] Add a button "Add/edit encounter"
+       - [ ] Fuzzy matching on the name.
+       - [ ] Find a match, open the edit encounter screen
+       - [ ] No match, new encounter screen.
+
+*** TODO  Add creature to encounter
+       - [ ] Add a button to add a creature.
+       - [ ] Fuzzy matching, create-instance dialog, appropriate behavior.
+       - [ ] Auto-roll the HP!
+       - [ ] On close you see the update encounter.
+       - [ ] Adding a player, click on the "is-pc" tag, so you will be prompted for player initiatives.
+       - [ ] Add a "run the encounter button.
+       - [ ] On  "run the encounter", prompt for player initiatiaties, roll creature initiatives, and sort the entires.
+       - [ ] We'll need a "next button" that iterates over all the participants, and shows the necessary details to run the encounter.
+       - [ ] We'll need to be able to switch between group and participant view, and have meaningful information in the group view.
+       - [ ] On the active participant, we'll want a little "HP" button that lets us adjust the HP.
+
+*** TODO Status.
+        - unconcious.
+        - poisoned
+        - burning
+        - charmed
+          The usual DB stuff.
+
+*** TODO I can sync across devices.
+        This is a hairy one.  I should talk to Alvin about how to do this.  I'd like to host  a db on AWS and sync regularly.  Alvin can help with AWS setup,  and maybe syncing strategy.
+
+*** TODO I can copy paste text from D&DB
+       And get a creature entry out of it!
+
+
+
 
 We'll need screens for the following:
-
- - List encounters, choose an encounter.
- - Create/edit an encounter.
- - Run an encounter.
- - Enter PC initiative rolls.
-
 
 * Text importing from DADB
 

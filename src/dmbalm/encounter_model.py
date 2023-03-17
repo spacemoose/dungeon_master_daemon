@@ -54,22 +54,27 @@ class CreatureInstance(Base):
     hit_points = Column(Integer)
     is_pc = Column(Boolean)  # is it a player character?
     initiative = Column(Integer)
-
     creature_id = Column(Integer, ForeignKey("creature.name"))
     encounter_id = Column(Integer, ForeignKey("encounter.id"))
 
     # not sure I need/want this:
-    # encounter = relationship("Encounter", back_populates="creature_instances")
+    encounter = relationship("Encounter", back_populates="creature_instances")
 
+    def __init__(self, creature_name):
+        """Construct an instance of creature of type creature_name."""
+
+        creature_id  = creature_name
+        is_pc = false
+        iniative =
 
 # Stores encounters, which are essentially lists of creatures and PC's.  There are
 class Encounter(Base):
     __tablename__ = "encounter"
     id = Column(Integer, primary_key=True)
     name = Column(String(30))
-    Description = Column(String)
+    description = Column(String)
 
-    # creature_instances = relationship("CreatureInstance", back_populates="encounters")
+    creature_instances = relationship("CreatureInstance", back_populates="encounters")
 
 
 # For now actions are just labels and descriptions.
