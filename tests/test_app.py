@@ -1,7 +1,6 @@
 import sys
 sys.path.insert(0,"../src/")
 
-from sqlalchemy import create_engine, engine_from_config
 from sqlalchemy.orm import Session
 
 from dmbalm.encounter_model import Base
@@ -11,11 +10,9 @@ from dmbalm.encounter_model import Action
 from dmbalm.encounter_model import Base
 from dmbalm.encounter_model import Creature, CreatureInstance, Encounter
 from dmbalm import crud
+from dmbalm.connection import engine
 
 import dice
-
-engine = crud.engine
-
 
 def test_create_tables():
     Base.metadata.create_all(engine)
@@ -59,11 +56,19 @@ def test_instantiate_kobold():
     cr = crud.get_creature(crname)
     kob = CreatureInstance(crname)
     assert (kob.creature_id == crname)
-    assert( dice.min_roll(cr.hit_dice) <= kob.hit_points <= dice.max_roll(cr.hit_dice))
+    assert( dice.roll_min(cr.hit_dice) <= kob.hit_points <= dice.roll_max(cr.hit_dice))
+    with Session(engine) as session, session.begin():
+        session.add(kob)
+        session.commit()
 
-# def test_create_four_kobolds():
-#      enc = Encounter(name = "four kobolds", description = "random encounter in Dragon Hatchery")
-#      enc.creature_instances = [CreatureInstance("Kobold") for _ in range(4)]
+    # with Session(engine) as session, session.begin():
+    #     instances = crud.get_instances()
+    #     assert(instances.count() == 1)
+
+
+# def test_encounter_4_kobolds():
+#     enc = Encounter(name = "four kobolds", description = "random encounter in Dragon Hatchery")
+#     enc.creature_instances = [CreatureInstance("Kobold") for _ in range(4)]
 
 
 

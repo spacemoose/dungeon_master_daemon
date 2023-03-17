@@ -25,15 +25,16 @@ To create the virtual environment, run:
       - [X] I can add the two actions to the kobold.
 
 *** TODO test_instances
-- [ ] kinda gotta decide on a basic interface for creating and adding instances.
-- [ ] on construction, I want to roll the hit points, and initiative.  Options can come later.
-Sanity checks on the following:
-- [ ]  4 kobolds
-- [ ] 6 kobolds and 2 winged kobolds
-- [ ] 3 winged kobolds
-- [ ] 5 winged kobolds
-- [ ] 2 winged kobolds and 1 guard drake (appendix D)
-- [ ] 2 ambush drakes (appendix D)
+- [X] kinda gotta decide on a basic interface for creating and adding instances.
+- [X] on construction, I want to roll the hit points, and initiative.  Options can come later.
+
+*** TODO TEST ENCOUNTER CREATIONS
+    - [ ]  4 kobolds
+    - [ ] 6 kobolds and 2 winged kobolds
+    - [ ] 3 winged kobolds
+    - [ ] 5 winged kobolds
+    - [ ] 2 winged kobolds and 1 guard drake (appendix D)
+    - [ ] 2 ambush drakes (appendix D)
 
 ** TODO test_crud
 Check out the user interface notes below for what to do here.

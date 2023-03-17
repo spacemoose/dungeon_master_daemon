@@ -1,13 +1,14 @@
 
-from dmbalm.encounter_model import Creature
+from dmbalm.encounter_model import Creature, CreatureInstance
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
-engine = create_engine("sqlite+pysqlite:///:memory:", echo=True, future=True)
-Session = sessionmaker(engine)
+from dmbalm.connection import Session
 
 def get_creature(creature_name):
     with Session() as session:
         res = session.query(Creature).filter_by(name=creature_name)
         return res.first()
+
+def get_instances():
+    """Get all creature instances"""
+    with Session() as session:
+        return session.query(CreatureInstance)

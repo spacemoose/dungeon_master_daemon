@@ -1,6 +1,6 @@
 import dice
-from . import modifiers
-from . import crud
+from dmbalm import modifiers
+from dmbalm.connection import Session
 
 from sqlalchemy import (
     Boolean,
@@ -9,11 +9,11 @@ from sqlalchemy import (
     Integer,
     String,
     Numeric,
-)
+ )
+
 from sqlalchemy.orm import relationship, declarative_base
 
 Base = declarative_base()
-
 
 # Player Character's can be represented by a creature with everything Null
 # except for the creature name, which let's us know who's initiative roll we
@@ -55,10 +55,11 @@ class Creature(Base):
 class CreatureInstance(Base):
     __tablename__ = "creature_instance"
     id = Column(Integer, primary_key=True)
+    #    creature_id = Column(String, ForeignKey("creature.name"))
+    creature_id = Column(String)
     hit_points = Column(Integer)
     is_pc = Column(Boolean)  # is it a player character?
     initiative = Column(Integer)
-    creature_id = Column(Integer, ForeignKey("creature.name"))
     encounter_id = Column(Integer, ForeignKey("encounter.id"))
 
     # not sure I need/want this:
@@ -66,15 +67,15 @@ class CreatureInstance(Base):
 
     def __init__(self, creature_name):
         """Construct an instance of creature of type creature_name."""
+        print("calling __init__ {}", creature_name)
+        self.creature_id  = creature_name
+        with Session() as session:
+            res = session.query(Creature).filter_by(name=creature_name)
+            crit = res.first()
 
-        creature_id  = creature_name
-        is_pc = False
-        crit = crud.get_creature(creature_name)
-
-        initiative = dice.roll('1d20') + modifers.lookup(crit.dexterity)
-        hit_points = dice.roll(crit.hit_dice)
-
-
+        self.hit_points = int(dice.roll(crit.hit_dice))
+        self.is_pc = False
+        self.initiative = int(dice.roll('1d20t') + modifiers.lookup(crit.dexterity))
 
 
 # Stores encounters, which are essentially lists of creatures and PC's.  There are
