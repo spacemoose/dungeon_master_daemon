@@ -1,7 +1,7 @@
 import sys
 sys.path.insert(0,"../src/")
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, engine_from_config
 from sqlalchemy.orm import Session
 
 from dmbalm.encounter_model import Base
@@ -10,9 +10,11 @@ from dmbalm.encounter_model import Action
 
 from dmbalm.encounter_model import Base
 from dmbalm.encounter_model import Creature, CreatureInstance, Encounter
+from dmbalm import crud
 
+import dice
 
-engine = create_engine("sqlite+pysqlite:///:memory:", echo=True, future=True)
+engine = crud.engine
 
 
 def test_create_tables():
@@ -44,15 +46,28 @@ def test_add_kobold():
         session.add(sling)
         session.commit()
 
-
 def test_count_creatures():
     with Session(engine) as session, session.begin():
         assert(session.query(Creature).count() == 1)
 
+def test_get_creature():
+    kob = crud.get_creature("Kobold")
+    assert(kob.name == "Kobold")
 
-def test_create_encounter():
-    four_kobolds = Encounter(name = "four kobolds", description = "random encounter in Dragon Hatchery")
-    creature_instance =
+def test_instantiate_kobold():
+    crname = "Kobold"
+    cr = crud.get_creature(crname)
+    kob = CreatureInstance(crname)
+    assert (kob.creature_id == crname)
+    assert( dice.min_roll(cr.hit_dice) <= kob.hit_points <= dice.max_roll(cr.hit_dice))
+
+# def test_create_four_kobolds():
+#      enc = Encounter(name = "four kobolds", description = "random encounter in Dragon Hatchery")
+#      enc.creature_instances = [CreatureInstance("Kobold") for _ in range(4)]
+
+
+
+
 
 # Okay, up next let's make some crud methods for creating and reading
 # stuff from the db.

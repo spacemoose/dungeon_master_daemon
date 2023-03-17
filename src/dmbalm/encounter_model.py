@@ -1,3 +1,7 @@
+import dice
+from . import modifiers
+from . import crud
+
 from sqlalchemy import (
     Boolean,
     Column,
@@ -64,8 +68,14 @@ class CreatureInstance(Base):
         """Construct an instance of creature of type creature_name."""
 
         creature_id  = creature_name
-        is_pc = false
-        iniative =
+        is_pc = False
+        crit = crud.get_creature(creature_name)
+
+        initiative = dice.roll('1d20') + modifers.lookup(crit.dexterity)
+        hit_points = dice.roll(crit.hit_dice)
+
+
+
 
 # Stores encounters, which are essentially lists of creatures and PC's.  There are
 class Encounter(Base):
@@ -74,7 +84,7 @@ class Encounter(Base):
     name = Column(String(30))
     description = Column(String)
 
-    creature_instances = relationship("CreatureInstance", back_populates="encounters")
+    creature_instances = relationship("CreatureInstance", back_populates="encounter")
 
 
 # For now actions are just labels and descriptions.
