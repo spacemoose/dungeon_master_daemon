@@ -1,5 +1,4 @@
 # Schemas for the pydantic models
-
 from typing import List, Optional
 from pydantic import BaseModel
 
@@ -7,12 +6,15 @@ class ActionBase(BaseModel):
     name: str
     description: str
 
+    def to_base_dict(self):
+        return
+
 class ActionCreate(ActionBase):
     pass
 
 class Action(ActionBase):
     id: int
-    creature_id: int
+    creature_id: str
 
     class Config:
         orm_mode=True
@@ -20,30 +22,42 @@ class Action(ActionBase):
 
 class CreatureBase(BaseModel):
     name: str
+    description: Optional[str]
+    armor_class: int
+    challenge: Optional[float]
     dexterity: int
     hit_dice: str
-    armor_class: str
-    xp: int
-    challenge: float
-    languages: str
-    speed: int
-    senses: str
-    proficiency_bonus: int
+    languages: Optional[str]
+    proficiency_bonus: Optional[int]
+    senses: Optional[str]
+    speed: Optional[int]
+    xp: Optional[int]
+
 
 class CreatureCreate(CreatureBase):
-    pass
+    actions: List[ActionCreate] = []
+
 
 class Creature(CreatureBase):
-    actions: List[Action] = []
+    actions: Optional[List[Action]] = []
     class Config:
         orm_mode=True
 
 
+class CreatureInstanceBase(BaseModel):
+    """name is optional, may want to label individual instances of
+    creatures, for example bob the kobold"""
+    creature_id: str
+    is_pc: bool = False
+    name: Optional[str]
+
+# @todo support optional instance name, e.g. bob the kobold.
+class CreatureInstanceCreate(CreatureInstanceBase):
+    pass
+
 class CreatureInstance(BaseModel):
     id: Optional[int]
-    creature_id: str
     hit_points: int
-    is_pc: bool
     initiative: int
     encounter_id: Optional[int]
 
@@ -51,11 +65,15 @@ class CreatureInstance(BaseModel):
         orm_mode = True
 
 
-class Encounter(BaseModel):
-    id: Optional[int]
+class EncounterBase(BaseModel):
     name: str
     description: Optional[str]
-    creature_instances: Optional[List['CreatureInstance']] = []
 
+class EncounterCreate(EncounterBase):
+    creature_instances: List['CreatureInstanceCreate'] = []
+
+class Encounter(EncounterBase):
+    id: Optional[int]
+    creature_instances: List['CreatureInstance'] = []
     class Config:
         orm_mode = True
