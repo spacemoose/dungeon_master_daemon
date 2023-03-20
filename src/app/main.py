@@ -5,18 +5,13 @@ from kivymd.app import MDApp
 from kivymd.uix.list import OneLineListItem
 from dmbalm import initialize_db, crud, db
 
-KV = '''
-MDScrollView:
-
-    MDList:
-        id: container
-'''
-
 
 class EncounterList(MDApp):
+    title = "List of Encounters"
     def build(self):
+        print (self.root)
         self.theme_cls.theme_style = "Dark"
-        return Builder.load_string(KV)
+
 
     def on_start(self):
         encounters = crud.get_encounters(db.SessionLocal())
