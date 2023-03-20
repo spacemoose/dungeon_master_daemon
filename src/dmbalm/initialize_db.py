@@ -1,3 +1,5 @@
+""" methods to populate some creatures & encounters"""
+
 from dmbalm import monster_texts
 from dmbalm.db import Base
 from dmbalm import crud

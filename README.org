@@ -56,10 +56,11 @@ CLOSED: [2023-03-20 Mon 06:23]
 
 *** Make this work.
 
-** TODO display list of encounters
-* User interface
-** TODO  do a pyvi tutorial, maybe two.
-** TODO Interface for adding a creature
+** User interface
+*** DONE I can view a list of encounters
+CLOSED: [2023-03-20 Mon 10:25]
+*** TODO I can click on an encounter, and view its details
+*** TODO Interface for adding a creature
        - [ ] Start with a stupid button to call up the "add creature" interface.
        - [ ] I can create a creature.
        - [ ] When typing in creature name, fuzzy matching prevents me from duplicating an entry -- go to edit instead of create.
@@ -68,13 +69,13 @@ CLOSED: [2023-03-20 Mon 06:23]
        - [ ] I can fuzzy-match by partial name, and either select or create new appropriately.
        - [ ] I'll need an add button, and a cancel button.
 
-** TODO  I can create an encounter
+*** TODO  I can create an encounter
        - [ ] Add a button "Add/edit encounter"
        - [ ] Fuzzy matching on the name.
        - [ ] Find a match, open the edit encounter screen
        - [ ] No match, new encounter screen.
 
-** TODO  Add creature to encounter
+*** TODO  Add creature to encounter
        - [ ] Add a button to add a creature.
        - [ ] Fuzzy matching, create-instance dialog, appropriate behavior.
        - [ ] Auto-roll the HP!
@@ -86,17 +87,17 @@ CLOSED: [2023-03-20 Mon 06:23]
        - [ ] We'll need to be able to switch between group and participant view, and have meaningful information in the group view.
        - [ ] On the active participant, we'll want a little "HP" button that lets us adjust the HP.
 
-** TODO Status.
+*** TODO Status.
         - unconcious.
         - poisoned
         - burning
         - charmed
           The usual DB stuff.
 
-** TODO I can sync across devices.
+*** TODO I can sync across devices.
         This is a hairy one.  I should talk to Alvin about how to do this.  I'd like to host  a db on AWS and sync regularly.  Alvin can help with AWS setup,  and maybe syncing strategy.
 
-** TODO I can copy paste text from D&DB
+*** TODO I can copy paste text from D&DB
        And get a creature entry out of it!
 
 
@@ -104,7 +105,8 @@ CLOSED: [2023-03-20 Mon 06:23]
 
 We'll need screens for the following:
 
-
+** TODO Persist across sessions
+So far I'm just using in-memory db for testing.  Add support for real persisence.
 * Notes
 
 Okay, I now have workign db language for the stuff I need to store.  The next step is either to connect this

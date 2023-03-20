@@ -1,7 +1,9 @@
+import sys
+sys.path.append("../")
 from kivy.lang import Builder
-
 from kivymd.app import MDApp
 from kivymd.uix.list import OneLineListItem
+from dmbalm import initialize_db, crud, db
 
 KV = '''
 MDScrollView:
@@ -11,15 +13,17 @@ MDScrollView:
 '''
 
 
-class Example(MDApp):
+class EncounterList(MDApp):
     def build(self):
         self.theme_cls.theme_style = "Dark"
         return Builder.load_string(KV)
 
     def on_start(self):
-        for i in range(20):
+        encounters = crud.get_encounters(db.SessionLocal())
+        for enc in encounters:
             self.root.ids.container.add_widget(
-                OneLineListItem(text=f"Single-line item {i}")
+                OneLineListItem(text=enc.name)
             )
 
-Example().run()
+initialize_db.populate_db()
+EncounterList().run()
