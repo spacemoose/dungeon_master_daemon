@@ -16,7 +16,8 @@ To create the virtual environment, run:
 #+begin_src bash
    pip install -r requirements.txt
 #+end_src
-
+I run into proplems pip installing kivy.  If you do too, try this:
+pip install kivy[base] kivy_examples --pre --extra-index-url https://kivy.org/downloads/simple/
 ** TODO DB stuff
 
 *** TODO [100%] test_creature.
