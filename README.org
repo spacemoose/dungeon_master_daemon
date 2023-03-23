@@ -1,6 +1,8 @@
 * Dungeon Master's Daemon
 
-A tool to help tabletop dungeon masters with managing combat.
+Hopefully eventually a tool to help tabletop dungeon masters with managing combat.  Right now it's more a playground for me to learn some python.  Not useful for anyone, except those that might want to give me some feedback or pitch in.
+
+** Goal functionality
 
    - Create and manage encounters.
    - Manually enter the player's initiative roles, and let your daemon roll initiative for creatures and npcs.
@@ -8,6 +10,11 @@ A tool to help tabletop dungeon masters with managing combat.
 
 Basicaly, it's what I wish D&D Beyond would deliver with it's encounter builder.
 
+** What works now:
+  - db structure and crud seems to work fine, but  it's just in-memory at the moment.  See ~tests~.
+  - I can copy-paste text from d&d beyond, to create a new creature.
+** What's next:
+- Learn how to do gui's in Kivy, so I can implement the UI's.    See tatsks below for what I'm working on next.
 * Development
 ** Setup the virtual env
 You can check out all the requirements in ~requirements.txt~.  Big love to borntyping and calebj for dice.
