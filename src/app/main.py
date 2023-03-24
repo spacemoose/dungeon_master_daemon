@@ -2,27 +2,26 @@ import sys
 sys.path.append("../")
 import functools
 
-from kivy.lang import Builder
-from kivy.uix.label import Label
-from kivy.uix.modalview import ModalView
 from kivymd.app import MDApp
 from kivymd.uix.list import OneLineListItem
 from kivymd.uix.scrollview import MDScrollView
+from kivy.uix.boxlayout import BoxLayout
 
 from dmbalm import crud, db, initialize_db
 
 
-EncounterView = ModalView()
-EncounterView.add_widget(Label(text="Encounter View"))
+class DMDRoot(BoxLayout):
+    pass
 
-# OK, I guess I can construct an EncounterItem from an Encounter object,
+# I can construct an EncounterItem from an Encounter object,
 # and be able to do what I want.
+# Can I put the self.on_release into the kv file now?
 class EncounterListItem(OneLineListItem):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.on_release = self.presser
+        self.on_release = self.press
 
-    def presser(self):
+    def press(self):
         print("pressed {}".format(self.text))
 
 class EncounterList(MDScrollView):
@@ -31,15 +30,13 @@ class EncounterList(MDScrollView):
 class CreatureListItem(OneLineListItem):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.on_release = self.pressed
+        self.on_release = self.press
 
 
 class dmdApp(MDApp):
     title = "List of Encounters"
     def build(self):
-        print (self.root)
         self.theme_cls.theme_style = "Dark"
-        self.root = EncounterList()
         return self.root
 
     def pressed(self, text):
