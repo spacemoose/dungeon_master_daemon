@@ -7,6 +7,7 @@ from kivy.uix.label import Label
 from kivy.uix.modalview import ModalView
 from kivymd.app import MDApp
 from kivymd.uix.list import OneLineListItem
+from kivymd.uix.scrollview import MDScrollView
 
 from dmbalm import crud, db, initialize_db
 
@@ -22,24 +23,35 @@ class EncounterListItem(OneLineListItem):
         self.on_release = self.presser
 
     def presser(self):
-        EncounterView.open()
+        print("pressed {}".format(self.text))
 
-class EncounterList(MDApp):
+class EncounterList(MDScrollView):
+    pass
+
+class CreatureListItem(OneLineListItem):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.on_release = self.pressed
+
+
+class dmdApp(MDApp):
     title = "List of Encounters"
     def build(self):
         print (self.root)
         self.theme_cls.theme_style = "Dark"
+        self.root = EncounterList()
+        return self.root
 
-    def presser(self, text):
+    def pressed(self, text):
         print(text)
 
 
     def on_start(self):
         encounters = crud.get_encounters(db.SessionLocal())
         for enc in encounters:
-            self.root.ids.container.add_widget(
-                EncounterListItem(text =enc.name))
+            self.root.ids.encounters_list.add_widget(
+                EncounterListItem(text = enc.name))
 
 
 initialize_db.populate_db()
-EncounterList().run()
+dmdApp().run()
