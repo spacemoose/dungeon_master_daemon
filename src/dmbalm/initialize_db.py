@@ -41,13 +41,13 @@ def add_random_encounters():
 
     rand5 = schemas.EncounterCreate(name = "2 winged kobolds and 1 guard drake", description = "5/6 random encounters in Dragon Hatchery")
     for _ in range(2):
-        rand4.creature_instances.append(schemas.CreatureInstanceCreate(creature_id = "Winged Kobold"))
+        rand5.creature_instances.append(schemas.CreatureInstanceCreate(creature_id = "Winged Kobold"))
     rand5.creature_instances.append(schemas.CreatureInstanceCreate(creature_id = "Guard Drake"))
     addme.append(rand5)
 
     rand6 = schemas.EncounterCreate(name = "2 ambush drakes", description = "6/6 random encounters in Dragon Hatchery")
     for _ in range (2):
-        rand6.creature_instances.append(schemas.CreatureInstanceCreate(creature_id = "Guard Drake"))
+        rand6.creature_instances.append(schemas.CreatureInstanceCreate(creature_id = "Ambush Drake"))
     addme.append(rand6)
 
     crud.add_encounters(SessionLocal(), addme)

@@ -44,3 +44,19 @@ def test_encounters_exist():
     have = set([enc.name for enc in encounters])
     assert len(have) == len(should_have)
     assert have == should_have
+
+def test_2_drakes():
+    enc = crud.get_encounter(SessionLocal(), "2 ambush drakes")
+    assert len(enc.creature_instances) ==2
+    for crit in enc.creature_instances:
+        assert crit.creature_id == "Ambush Drake"
+
+
+def test_creature_instances():
+    """Check that we can access creature instance info correctly from an
+    encounter."""
+    name_should  = "2 ambush drakes"
+    enc = crud.get_encounter(SessionLocal(), name_should)
+    assert enc.name == name_should
+    for crit in enc.creature_instances:
+        assert crit.creature_id == "Ambush Drake"

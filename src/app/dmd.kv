@@ -1,9 +1,32 @@
+
+<EncounterItem@TwoLineListItem>:
+    on_release: app.open_encounter(self.encounter)
+
+<CreatureItem@TwoLineListItem>:
+    on_release: print("foo")
+
+<EncounterView@BoxLayout>:
+    orientation: "vertical"
+    id: encounter_view
+    Label:
+        id: encounter_label
+
+    MDList:
+        id: encounter_creatures
+
+    BoxLayout:
+        orientation: "horizontal"
+        MDTextButton:
+            text: "Done"
+            on_release: app.show_encounters()
+
+<EncounterOverview@BoxLayout>:
+    orientation: "vertical"
+    id: encounter_overview
+    MDList:
+        id: encounters_list
+
 DMDRoot:
 
 <DMDRoot>:
-
     id: DMDroot
-    EncounterList:
-
-        MDList:
-            id: encounters_list

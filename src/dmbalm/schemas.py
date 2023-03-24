@@ -55,7 +55,7 @@ class CreatureInstanceBase(BaseModel):
 class CreatureInstanceCreate(CreatureInstanceBase):
     pass
 
-class CreatureInstance(BaseModel):
+class CreatureInstance(CreatureInstanceBase):
     id: Optional[int]
     hit_points: int
     initiative: int

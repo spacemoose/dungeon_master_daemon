@@ -1,128 +1,106 @@
 * Dungeon Master's Daemon
 
+This is currently just a development playground, but if you are a developer, reviews and MR's are welcome.
+
 Hopefully eventually a tool to help tabletop dungeon masters with managing combat.  Right now it's more a playground for me to learn some python.  Not useful for anyone, except those that might want to give me some feedback or pitch in.
 
 ** Goal functionality
+I'm looking for something lightweight and unobtrusive that helps me with encounter bookkeeping while DM'ing tabletop D&D sessions.    I want to be able to do the following easily:
 
-   - Create and manage encounters.
-   - Manually enter the player's initiative roles, and let your daemon roll initiative for creatures and npcs.
-   - Manage create HP and eventually effects.
+   - Create  encounters, populate them with creatures..
+   - Manually enter the player's initiative roles, and let the daemon roll initiative for creatures and npcs.
+   - "Run the encounter" -- iterate over participants, and alter HP and status of creatures.  Party members should manage their own, so for party members I just track name & initiative.
 
-Basicaly, it's what I wish D&D Beyond would deliver with it's encounter builder.
+Basically, it's what I wish D&D Beyond would deliver with it's encounter builder.
 
-** What works now:
-  - db structure and crud seems to work fine, but  it's just in-memory at the moment.  See ~tests~.
-  - I can copy-paste text from d&d beyond, to create a new creature.
-** What's next:
-- Learn how to do gui's in Kivy, so I can implement the UI's.    See tatsks below for what I'm working on next.
-* Development
+** Current state
+
+- I think I have the DB, tables and crud where they need to, or at least trivial to extend.  So far it's all just in memory, no lasting persistance.
+- db structure and crud seems to work fine, but  it's just in-memory at the moment.  See ~tests~.
+- I  have a text parser so I can copy-paste text from d&d beyond to add a creature.
+- I have some initial playground stuff on the UI.  I can see a list of existing encounters, and see the contents of a specific encounter.
+
+
+  The section "Tasks" below shows what I plan to work on next, roughly in the order I plan to work on it.  If you want to help out, pick something interesting and let me know you're working on it.
+* Running and Testing
 ** Setup the virtual env
-You can check out all the requirements in ~requirements.txt~.  Big love to borntyping and calebj for dice.
+This should be as simple as  creating a virtual environment, activating it, and the running the app or the tests.
+*** Make a virtual environment (venv)
 
-To create the virtual environment, run:
-#+begin_src bash
-   pip install -r requirements.txt
+#+begin_src shell
+# in project root
+python -m .venv
 #+end_src
-I run into proplems pip installing kivy.  If you do too, try this:
+
+*** Activate your venv
+You'll want to do this whenever you're running or working on this project:
+#+begin_src shell
+# in project root
+source .venv/bin/activate
+#+end_src
+
+*** Leaving your venv
+#+begin_src shell
+#works wherever
+deactivate
+#+end_src
+
+*** Installing dependancies
+You can check out all the requirements in ~requirements.txt~.  I'll try to keep it up to date.
+
+ I'm running python 3.11, and had to do a little more than ~pip install kivy~ to get things running.   Specifically I do the following:
+
+#+begin_src bash
+# this works from anywhere, but makes sure your virtual env is active!
+# get a kivy from source:
 pip install kivy[base] kivy_examples --pre --extra-index-url https://kivy.org/downloads/simple/
-** TODO DB stuff
+pip install -r requirements.txt
+#+end_src
+
+Kivy has some dependancies, so if you run into any trouble, let me know and I'll update the docs.
+
+At that point you should be ready to run tests:
+
+#+begin_src bash
+# from project root
+cd tests
+pytest
+#+end_src
+
+Or see the app in development:
+#+begin_src bash
+cd src/app
+python main.py
+#+end_src
+
 
 * Tasks
-** DONE DB stuff
-CLOSED: [2023-03-20 Mon 09:45]
-
-
-*** DONE [100%] test_creature.
-CLOSED: [2023-03-20 Mon 06:25]
-      - [X] I can create a kobold
-      - [X] I can view a kobold
-      - [X] I can add the two actions to the kobold.
-
-*** DONE test_instances
-CLOSED: [2023-03-20 Mon 06:25]
-- [X] kinda gotta decide on a basic interface for creating and adding instances.
-- [X] on construction, I want to roll the hit points, and initiative.  Options can come later.
-
-*** DONE TEST ENCOUNTER CREATIONS
-CLOSED: [2023-03-20 Mon 06:25]
-    - [X]  4 kobolds
-
-      Tests are good when I can verify the contents of the created encounters.
-
-  *** TODO Creation in CRUD using pdyantic models
-** DONE CRUD
-CLOSED: [2023-03-20 Mon 09:44]
-   - [X] Create creature tested.
-*** DONE TEST ENCOUNTERS:
-CLOSED: [2023-03-20 Mon 09:44]
-    - [X] 6 kobolds and 2 winged kobolds
-    - [X] 3 winged kobolds
-    - [X] 5 winged kobolds
-    - [X] 2 winged kobolds and 1 guard drake (appendix D)
-    - [X] 2 ambush drakes (appendix D)
-
-** DONE Text importing from DADB
-CLOSED: [2023-03-20 Mon 06:23]
-
-*** Make this work.
-
-** User interface
+First iteration is to be able to run my family's encounters.  So just one group of party members, including a couple of npc's, and minimal sorting and filtering of things.   Multi-campagin can come later.
+** I can  to run programmatically created encounters.
 *** DONE I can view a list of encounters
 CLOSED: [2023-03-20 Mon 10:25]
-*** TODO I can click on an encounter, and view its details
-*** TODO Interface for adding a creature
-       - [ ] Start with a stupid button to call up the "add creature" interface.
-       - [ ] I can create a creature.
-       - [ ] When typing in creature name, fuzzy matching prevents me from duplicating an entry -- go to edit instead of create.
-       - [ ] I can select an existing attack by name.
-       - [ ] I can create an existing attack when name does not exist.
-       - [ ] I can fuzzy-match by partial name, and either select or create new appropriately.
-       - [ ] I'll need an add button, and a cancel button.
-
-*** TODO  I can create an encounter
-       - [ ] Add a button "Add/edit encounter"
-       - [ ] Fuzzy matching on the name.
-       - [ ] Find a match, open the edit encounter screen
-       - [ ] No match, new encounter screen.
-
-*** TODO  Add creature to encounter
-       - [ ] Add a button to add a creature.
-       - [ ] Fuzzy matching, create-instance dialog, appropriate behavior.
-       - [ ] Auto-roll the HP!
-       - [ ] On close you see the update encounter.
-       - [ ] Adding a player, click on the "is-pc" tag, so you will be prompted for player initiatives.
-       - [ ] Add a "run the encounter button.
-       - [ ] On  "run the encounter", prompt for player initiatiaties, roll creature initiatives, and sort the entires.
-       - [ ] We'll need a "next button" that iterates over all the participants, and shows the necessary details to run the encounter.
-       - [ ] We'll need to be able to switch between group and participant view, and have meaningful information in the group view.
-       - [ ] On the active participant, we'll want a little "HP" button that lets us adjust the HP.
-
-*** TODO Status.
-        - unconcious.
-        - poisoned
-        - burning
-        - charmed
-          The usual DB stuff.
-
-*** TODO I can sync across devices.
-        This is a hairy one.  I should talk to Alvin about how to do this.  I'd like to host  a db on AWS and sync regularly.  Alvin can help with AWS setup,  and maybe syncing strategy.
-
-*** TODO I can copy paste text from D&DB
-       And get a creature entry out of it!
-
-
-
-
-We'll need screens for the following:
-
+*** DONE I can click on an encounter, and view its details
+CLOSED: [2023-03-24 Fri 17:02]
+*** TODO I can click on a creature instance, and get its details
+*** TODO I can add party members to an encounter.
+-
+*** TODO I can "run" the encounter
+- Make a button "run encounter".
+- It prompts for the initiative of player characters, and adds them into the encounter.
+- It sorts participants by initiative order.
+- It highlights or expands the active participant (maybe a card maybe with roll-attack btn)
+- Each non (n)pc character has an HP button, that lets me damage or heal the participant.
+- Intuitive progression to next participant.   Should be able to fix a screw up.
+*** TODO I can "reset" the encounter.
+*** TODO Encounter displays the XP and challenge rating.
+Important for random encounters that might be repeated.
 ** TODO Persist across sessions
 So far I'm just using in-memory db for testing.  Add support for real persisence.
-* Notes
-
-Okay, I now have workign db language for the stuff I need to store.  The next step is either to connect this
-This looks helpful https://towardsdatascience.com/fastapi-cloud-database-loading-with-python-1f531f1d438a
-
 * Fantasies
+Assuming I can keep finding time and motivation to work on this, I'd like to  add the following functionality :
   - sharing data amongst devices
   - Include a picture of their creature, be able to fullscreen it to show to players.
   - statuses with explanations and expirations.
+* Notes
+
+This looks helpful https://towardsdatascience.com/fastapi-cloud-database-loading-with-python-1f531f1d438a
